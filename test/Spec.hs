@@ -38,7 +38,13 @@ test_bfs =
    testCase "double cons"
     $ assertEqual "simple" [(1,1),(1,2),(2,1),(1,3),(2,2),(3,1),(2,3),(3,2),(3,3)]
     $ toList $ bfs [1, 2, 3] >>= fromList . get >>= \(x, xs) -> (fromList . get) xs >>= \(y, _) -> pure (x, y)
-  ,testCase "infinite double cons"
+ , testCase "infinite double cons"
     $ assertEqual "simple" [(1,1),(1,2),(2,1),(1,3),(2,2),(3,1),(1,4),(2,3),(3,2)]
     $ take 9 $ toList $ bfs [1..] >>= fromList . get >>= \(x, xs) -> (fromList . get) xs >>= \(y, _) -> pure (x, y)
+ , testCase "guard"
+    $ assertEqual "simple" [(1,1),(2,2),(3,3),(4,4),(5,5),(6,6),(7,7),(8,8),(9,9)]
+    $ take 9 $ toList $ bfs [1..] >>= fromList . get >>= \(x, xs) -> (fromList . get) xs >>= \(y, _) -> guard (x == y) >> pure (x, y)
+ , testCase "not pattern"
+    $ assertEqual "simple" [(1,2),(2,1),(1,3),(3,1),(1,4),(2,3),(3,2),(4,1),(1,5)]
+    $ take 9 $ toList $ bfs [1..] >>= fromList . get >>= \(x, xs) -> (fromList . get) xs >>= \(y, _) -> snot (guard (x == y) >> pure ()) >> pure (x, y)
    ]

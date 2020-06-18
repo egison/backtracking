@@ -13,14 +13,23 @@ module Control.Monad.Search
   )
 where
 
-import           Data.Foldable                  ( toList )
 import           Control.Applicative            ( Alternative(..) )
 import           Control.Monad                  ( ap, MonadPlus(..) )
 
 -- | 'MonadSearch' represents searches with backtracking.
-class MonadSearch m where
+class MonadPlus m => MonadSearch m where
   fromList :: [a] -> m a
   toList   :: m a -> [a]
+
+  failure  :: m a -> Bool
+  default failure :: m a -> Bool
+  failure m = null (toList m)
+  snot     :: m a -> m ()
+  default snot :: m a -> m ()
+  snot m = if failure m then fromList [()] else mzero
+  guard    :: Bool -> m ()
+  default guard :: Bool -> m ()
+  guard t = if t then fromList [()] else mzero
 
 -- | DFS implementation of 'MonadSearch'.
 newtype DFS a = DFS { unDFS :: [a] }
