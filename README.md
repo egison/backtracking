@@ -15,11 +15,11 @@ as follows:
 ```haskell
 (\(mat, tgt) ->
    join mat tgt >>= \((m11, m12), (d11, d12)) ->
-     let hs = d11 in id >>
+     let hs = d11 in return () >>
        cons m12 d12 >>= \((m21, m22), (d21, d22)) ->
-         let x = d21 in id >>
-           let ts = d22 in id >>
-             pure (hs, x, ts))
+         let x = d21 in return () >>
+           let ts = d22 in return () >>
+             return (hs, x, ts))
   (dfs (List Something, [1, 2, 3]))
 -- [([], 1, [2, 3]), ([1], 2, [3]), ([1, 2], 3, [])]
 ```
@@ -33,11 +33,11 @@ is translated as follows:
 ```haskell
 (\(mat, tgt) ->
    cons mat tgt >>= \((m11, m12), (d11, d12)) ->
-     let x = d11 in id >>
+     let x = d11 in return () >>
        cons m12 d12 >>= \((m21, m22), (d21, d22)) ->
-         value m21 (x + 10) d21 >>
-           id >>
-             pure (hs, x, ts))
+         value m21 (x + 10) return () >>
+           return () >>
+             return (hs, x, ts))
   (dfs (List Something, [1, 2, 3]))
 -- [([], 1, [2, 3]), ([1], 2, [3]), ([1, 2], 3, [])]
 ```
