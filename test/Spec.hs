@@ -46,5 +46,5 @@ test_bfs =
     $ take 9 $ toList $ bfs [1..] >>= fromList . get >>= \(x, xs) -> (fromList . get) xs >>= \(y, _) -> guard (x == y) >> pure (x, y)
  , testCase "not pattern"
     $ assertEqual "simple" [(1,2),(2,1),(1,3),(3,1),(1,4),(2,3),(3,2),(4,1),(1,5)]
-    $ take 9 $ toList $ bfs [1..] >>= fromList . get >>= \(x, xs) -> (fromList . get) xs >>= \(y, _) -> snot (guard (x == y) >> pure ()) >> pure (x, y)
+    $ take 9 $ toList $ bfs [1..] >>= fromList . get >>= \(x, xs) -> (fromList . get) xs >>= \(y, _) -> lnot (guard (x == y) >> pure ()) >> pure (x, y)
    ]

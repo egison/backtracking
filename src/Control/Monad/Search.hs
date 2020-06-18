@@ -24,9 +24,9 @@ class MonadPlus m => MonadSearch m where
   failure  :: m a -> Bool
   default failure :: m a -> Bool
   failure m = null (toList m)
-  snot     :: m a -> m ()
-  default snot :: m a -> m ()
-  snot m = if failure m then fromList [()] else mzero
+  lnot     :: DFS a -> m ()
+  default lnot :: DFS a -> m ()
+  lnot m = if failure m then fromList [()] else mzero
   guard    :: Bool -> m ()
   default guard :: Bool -> m ()
   guard t = if t then fromList [()] else mzero
