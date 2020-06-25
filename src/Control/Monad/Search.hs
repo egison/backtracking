@@ -49,11 +49,11 @@ instance Functor BFS where
   fmap f (BFS xss) = BFS $ map (\xs -> map f xs) xss
 
 instance Applicative BFS where
-  pure x = BFS [[x]]
+  pure = return
   (<*>) = ap
 
 instance Monad BFS where
-  return = pure
+  return x = BFS [[x]]
   BFS [] >>= _ = BFS []
   BFS (xs:xss) >>= f = foldl mplus mzero (map f xs) `mplus` shift (BFS xss >>= f)
    where
@@ -61,18 +61,18 @@ instance Monad BFS where
     shift (BFS xss) = BFS ([] : xss)
 
 instance Alternative BFS where
-  empty = BFS []
-  (<|>) (BFS xss) (BFS yss) = BFS (merge xss yss)
+  empty = mzero
+  (<|>) = mplus
+
+instance MonadPlus BFS where
+  mzero = BFS []
+  mplus (BFS xss) (BFS yss) = BFS (merge xss yss)
    where
     merge :: [[a]] -> [[a]] -> [[a]]
     merge [] [] = []
     merge xss [] = xss
     merge [] yss = yss
     merge (xs:xss) (ys:yss) = (xs ++ ys) : merge xss yss
-
-instance MonadPlus BFS where
-  mzero = empty
-  mplus = (<|>)
 
 instance MonadSearch BFS where
   fromList xs = BFS (map (\x -> [x]) xs)
