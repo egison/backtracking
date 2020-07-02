@@ -9,16 +9,15 @@ import           Control.Monad.Search
 
 import           Test.Tasty
 import           Test.Tasty.HUnit
-import           Control.Egison hiding ( Integer )
 
 
 splits :: [a] -> [([a], [a])]
-splits xs = matchAllDFS xs (List Something)
-              [[mc| $hs ++ $ts -> (hs, ts) |]]
+splits [] = [([], [])]
+splits (x:xs) = ([], x:xs) : map (\(as, ys) -> (x:as, ys)) (splits xs)
+
 
 get :: [a] -> [(a, [a])]
-get xs = matchAllDFS xs (Set Something)
-           [[mc| $x : $rs -> (x, rs) |]]
+get xs = map (\x -> (x, xs)) xs
 
 
 test_dfs :: [TestTree]
