@@ -4,7 +4,7 @@ cabal-version:       >=1.10
 -- http://haskell.org/cabal/users-guide/
 
 name:                backtracking
-version:             0.0.1
+version:             0.1.0
 -- synopsis:
 -- description:
 -- bug-reports:
