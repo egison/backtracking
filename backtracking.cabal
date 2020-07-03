@@ -5,15 +5,15 @@ cabal-version:       >=1.10
 
 name:                backtracking
 version:             0.1.0
--- synopsis:
--- description:
+synopsis:            A backtracking monad
+description:         This library provides a backtracking monad following Spivey's paper "Algebras for combinatorial search".
 -- bug-reports:
--- license:
+license:             BSD3
 license-file:        LICENSE
 author:              coord_e, Satoshi Egi
 maintainer:          Satoshi Egi <egi@egison.org>
 -- copyright:
--- category:
+category:            Control
 build-type:          Simple
 extra-source-files:  CHANGELOG.md
 
