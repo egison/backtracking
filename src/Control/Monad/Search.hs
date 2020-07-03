@@ -36,7 +36,9 @@ newtype DFS a = DFS { unDFS :: [a] }
   deriving newtype (Functor, Applicative, Monad, Alternative, MonadPlus)
 
 instance MonadSearch DFS where
+  {-# INLINE fromList #-}
   fromList xs = DFS xs
+  {-# INLINE toList #-}
   toList (DFS xs) = xs
 
 dfs :: a -> DFS a
