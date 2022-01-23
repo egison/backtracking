@@ -6,9 +6,7 @@
 
 module Control.Monad.Search
   ( MonadSearch(..)
-  , DFS
   , dfs
-  , BFS
   , bfs
   )
 where
@@ -31,18 +29,16 @@ class MonadPlus m => MonadSearch m where
   default guard :: Bool -> m ()
   guard t = if t then fromList [()] else mzero
 
--- | DFS implementation of 'MonadSearch'.
-newtype DFS a = DFS { unDFS :: [a] }
-  deriving newtype (Functor, Applicative, Monad, Alternative, MonadPlus)
-
-instance MonadSearch DFS where
+instance MonadSearch [] where
   {-# INLINE fromList #-}
-  fromList xs = DFS xs
+  fromList = id
   {-# INLINE toList #-}
-  toList (DFS xs) = xs
+  toList = id
 
-dfs :: a -> DFS a
-dfs x = DFS [x]
+type DFS a = [a]
+
+dfs :: a -> [a]
+dfs x = [x]
 
 -- | BFS implementation of 'MonadSearch'.
 newtype BFS a = BFS { unBFS :: [[a]] }
